@@ -66,4 +66,22 @@ public class EventController {
         List<RegistrationResponse> registrationResponses = registrationService.getEventRegistrations(eventId);
         return ResponseEntity.ok(registrationResponses);
     }
+    @GetMapping("/{eventId/registrations}/export")
+    public ResponseEntity<byte[]> exportRegistration(@PathVariable Long eventId){
+        List<RegistrationResponse> registrationResponses = registrationService.getEventRegistrations(eventId);
+        StringBuilder csv = new StringBuilder();
+        csv.append("Name,Email,Payment Status,Reference,Registered At\n");
+
+        for (RegistrationResponse r : registrationResponses) {
+            csv.append(r.getAttendeeName()).append(",")
+                    .append(r.getAttendeeEmail()).append(",")
+                    .append(r.getPaymentStatus()).append(",")
+                    .append(r.getPaystackReference()).append(",")
+                    .append(r.getRegisteredAt()).append("\n");
+        }
+
+        return ResponseEntity.ok()
+                .header("Content-Disposition", "attachment; filename=registrations.csv")
+                .body(csv.toString().getBytes());
+    }
 }
