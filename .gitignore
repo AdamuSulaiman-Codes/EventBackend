@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Hide Spring Boot properties and environment files
+src/main/resources/application.properties
+src/main/resources/application-dev.properties
+.env
