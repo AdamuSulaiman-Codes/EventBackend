@@ -1,10 +1,8 @@
-package com.achlys20.EventBackend.Event.dto;
+package com.achlys20.EventBackend.Registration.dto;
 
 import com.achlys20.EventBackend.Event.enums.EventStatus;
 import com.achlys20.EventBackend.Event.enums.TicketType;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -12,23 +10,25 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EventRequest {
+public class PublicEventResponse {
 
     private String title;
 
     private String description;
 
+    private String venue;
+
     private LocalDateTime startTime;
 
     private LocalDateTime endTime;
 
-    private String venue;
-
     private Integer capacity;
+
+    private String posterUrl;
 
     private TicketType ticketType;
 
-    private BigDecimal ticketPrice;
+    private EventStatus eventStatus;
 
-    private EventStatus status;
+    private BigDecimal ticketPrice;
 }

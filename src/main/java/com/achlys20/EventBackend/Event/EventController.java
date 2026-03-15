@@ -40,33 +40,33 @@ public class EventController {
         return ResponseEntity.ok(eventResponse);
     }
     @DeleteMapping("/{eventId}")
-    public ResponseEntity<String> deleteEvent(@PathVariable Long eventId){
-        eventService.deleteEvent(eventId);
+    public ResponseEntity<String> deleteEvent(@PathVariable Long eventId, Authentication authentication){
+        eventService.deleteEvent(eventId, authentication.getName());
         return ResponseEntity.ok("EVENT DELETED");
     }
 
     @PatchMapping("/{eventId}")
     public ResponseEntity<String> updateEvent(
             @PathVariable Long eventId,
-            @RequestBody EventRequest eventRequest,
-            @RequestPart("poster") MultipartFile poster
+            @RequestPart("event") EventRequest eventRequest,
+            @RequestPart(value = "poster", required = false) MultipartFile poster
     ){
         eventService.updateEvent(eventId, eventRequest, poster);
-        return ResponseEntity.ok("EVENT DELETED");
+        return ResponseEntity.ok("EVENT UPDATED");
     }
 
     @PatchMapping("/{eventId}/status")
-    public ResponseEntity<String> updateEvednt(@PathVariable Long eventId){
+    public ResponseEntity<String> updateStatus(@PathVariable Long eventId){
         eventService.updateEventStatus(eventId);
-        return ResponseEntity.ok("EVENT DELETED");
+        return ResponseEntity.ok("EVENT STATUS UPDATED");
     }
 
-    @GetMapping("/{eventId/registrations}")
+    @GetMapping("/{eventId}/registrations")
     public ResponseEntity<List<RegistrationResponse>> getEventRegistrationDetails(@PathVariable Long eventId){
         List<RegistrationResponse> registrationResponses = registrationService.getEventRegistrations(eventId);
         return ResponseEntity.ok(registrationResponses);
     }
-    @GetMapping("/{eventId/registrations}/export")
+    @GetMapping("/{eventId}/registrations/export")
     public ResponseEntity<byte[]> exportRegistration(@PathVariable Long eventId){
         List<RegistrationResponse> registrationResponses = registrationService.getEventRegistrations(eventId);
         StringBuilder csv = new StringBuilder();

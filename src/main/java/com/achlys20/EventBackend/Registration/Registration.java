@@ -35,4 +35,11 @@ public class Registration {
     private String paystackReference;
 
     private LocalDateTime registeredAt;
+
+    @Column(unique = true)
+    private String ticketToken;
+
+    private Boolean checkedIn = false;
+
+    private LocalDateTime checkedInAt;
 }

@@ -31,7 +31,8 @@ public class SecurityConfig {
                 .httpBasic(httpBasic -> httpBasic.disable())
                 .formLogin(form -> form.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll() // public routes
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/public/**").permitAll() // public routes
                         .requestMatchers("/ws/**").permitAll()
                         .anyRequest().authenticated()               // all others require auth
                 )

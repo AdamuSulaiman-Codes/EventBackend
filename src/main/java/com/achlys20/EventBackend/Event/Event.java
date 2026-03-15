@@ -29,7 +29,11 @@ public class Event {
     private String description;
 
     @Column(nullable = false)
-    private LocalDateTime date;
+    private LocalDateTime startTime;
+
+    @Column(nullable = false)
+    private LocalDateTime endTime;
+
 
     private String venue;
 

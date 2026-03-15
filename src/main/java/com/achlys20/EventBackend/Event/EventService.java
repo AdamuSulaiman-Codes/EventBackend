@@ -29,7 +29,8 @@ public class EventService {
                 event.getId(),
                 event.getTitle(),
                 event.getDescription(),
-                event.getDate(),
+                event.getStartTime(),
+                event.getEndTime(),
                 event.getVenue(),
                 event.getCapacity(),
                 event.getSlug(),
@@ -55,7 +56,8 @@ public class EventService {
 
         event.setTitle(eventRequest.getTitle());
         event.setDescription(eventRequest.getDescription());
-        event.setDate(eventRequest.getDate());
+        event.setStartTime(eventRequest.getStartTime());
+        event.setEndTime(eventRequest.getEndTime());
         event.setVenue(eventRequest.getVenue());
         event.setCapacity(eventRequest.getCapacity());
         event.setTicketType(eventRequest.getTicketType());
@@ -68,9 +70,13 @@ public class EventService {
 
         event.setCreatedAt(LocalDateTime.now());
         event.setInviteToken(UUID.randomUUID().toString());
-        event.setSlug(eventRequest.getTitle()
+
+        String slug = eventRequest.getTitle()
                 .toLowerCase()
-                .replace(" ", "-") + "-" + UUID.randomUUID().toString().substring(0,5));
+                .replaceAll("[^a-z0-9]+", "-");
+
+        event.setSlug(slug + "-" + UUID.randomUUID().toString().substring(0,6));
+
         event.setOrganizer(organizer);
 
         eventRepository.save(event);
@@ -97,7 +103,10 @@ public class EventService {
 
     // ---------------- Delete Event ----------------
     @Transactional
-    public void deleteEvent(Long eventId) {
+    public void deleteEvent(Long eventId, String email) {
+        Organizer organizer = organizerRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Organizer not found"));
+
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
 
@@ -118,7 +127,8 @@ public class EventService {
 
         event.setTitle(eventRequest.getTitle());
         event.setDescription(eventRequest.getDescription());
-        event.setDate(eventRequest.getDate());
+        event.setStartTime(eventRequest.getStartTime());
+        event.setEndTime(eventRequest.getEndTime());
         event.setVenue(eventRequest.getVenue());
         event.setCapacity(eventRequest.getCapacity());
         event.setTicketType(eventRequest.getTicketType());
